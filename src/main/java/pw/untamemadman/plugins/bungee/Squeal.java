@@ -17,14 +17,13 @@ import java.nio.file.Files;
 
 public class Squeal extends Plugin
 {
-    String configLoaded = "false";
     String Prefix = "§8[§bAlert§8]§r";
 
     @Override
     public void onEnable()
     {
-        defaultConfig();
         loadConfig();
+        Prefix = Prefix + " ";
         getProxy().getPluginManager().registerCommand(this, new SquealCommand("squeal"));
     }
 
@@ -83,25 +82,8 @@ public class Squeal extends Plugin
 
     public void loadConfig()
     {
-        try {
-            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
-            configLoaded = "true";
-        }
-        catch(IOException i)
-        {
-            getLogger().info("Squeal could not find its config file. Something must of gone wrong");
-            getLogger().info("There is a chance the plugin will not function");
-            getLogger().info("Error message: ");
-            i.printStackTrace();
-            configLoaded = "false";
-        }
-    }
-    public void defaultConfig()
-    {
         if (!getDataFolder().exists())
-        {
             getDataFolder().mkdir();
-        }
 
         File file = new File(getDataFolder(), "config.yml");
 
@@ -109,16 +91,36 @@ public class Squeal extends Plugin
         {
             try (InputStream in = getResourceAsStream("config.yml"))
             {
-                Files.copy(in, file.toPath());
+                Files.copy(getResourceAsStream("config.yml"), file.toPath());
             }
-            catch (IOException ii)
+            catch (IOException e)
             {
-                getLogger().info("Squeal could not find its config file. Something must of gone wrong");
-                getLogger().info("There is a chance the plugin will not function");
-                getLogger().info("Error message: ");
-                ii.printStackTrace();
-                configLoaded = "false";
+                e.printStackTrace();
             }
+        }
+
+        Configuration config = null;
+
+        try {
+            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+
+            //Sets the prefix to the one in the config
+            Prefix = config.getString("Prefix").toString();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+
+            //Sets the prefix to default
+            Prefix = "§8[§bAlert§8]§r";
+        }
+
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }
