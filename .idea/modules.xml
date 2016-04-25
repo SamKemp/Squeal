@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Alerter.iml" filepath="$PROJECT_DIR$/Alerter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Squeal.iml" filepath="$PROJECT_DIR$/Squeal.iml" />
     </modules>
   </component>
 </project>
