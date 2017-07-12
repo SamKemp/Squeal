@@ -11,4 +11,4 @@ It also allows for color customisation in the message.
  
  
 #Todo
- - Customisable prefix
+ - ~~Customisable prefix~~ Added
