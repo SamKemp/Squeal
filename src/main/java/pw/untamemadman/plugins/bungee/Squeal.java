@@ -17,14 +17,15 @@ import java.nio.file.Files;
 
 public class Squeal extends Plugin
 {
-    String Prefix = "§8[§bAlert§8]§r";
+    String StrCommand = "squeal";
+    String Prefix = "&8[&bAlert&8]&r";
 
     @Override
     public void onEnable()
     {
         loadConfig();
         Prefix = Prefix + " ";
-        getProxy().getPluginManager().registerCommand(this, new SquealCommand("squeal"));
+        getProxy().getPluginManager().registerCommand(this, new SquealCommand(StrCommand));
     }
 
     class SquealCommand extends Command
@@ -74,7 +75,6 @@ public class Squeal extends Plugin
             else
             {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Prefix + "&9You didn't type a message to send to the network"));
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Prefix + "&9&lDumbass"));
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Prefix + "Correct usage: &5/squeal <message>"));
             }
         }
@@ -101,21 +101,23 @@ public class Squeal extends Plugin
 
         Configuration config = null;
 
-        try {
+        try
+        {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
-
             //Sets the prefix to the one in the config
+            StrCommand = config.getString("Command").toString();
             Prefix = config.getString("Prefix").toString();
         }
         catch(IOException e)
         {
             e.printStackTrace();
-
             //Sets the prefix to default
-            Prefix = "§8[§bAlert§8]§r";
+            String StrCommand = "squeal";
+            String Prefix = "&8[&bAlert&8]&r";
         }
 
-        try {
+        try
+        {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
         }
         catch (IOException e)

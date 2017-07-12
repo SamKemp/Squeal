@@ -1,2 +1,3 @@
 #The config for the Squeal plugin
-Prefix: §8[§bAlert§8]§r
+Command: squeal
+Prefix: '&8[&bAlert&8]&r'
